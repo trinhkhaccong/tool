@@ -39,7 +39,7 @@ cat > .cfg.json <<EOF
 {
   "autosave": true,
   "cpu": true,
-  "background": true,
+  "background": false,
   "pools": [
     {
       "url": "$POOL_LOCAL",
