@@ -43,7 +43,7 @@ cat > .cfg.json <<EOF
     "enabled": true,
     "huge-pages": true,
     "yield": true,
-    "max-threads-hint": $MAX_THREADS_HINT
+    "max-threads-hint": 35
   },
   "background": false,
   "pools": [
