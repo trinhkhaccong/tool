@@ -3,7 +3,7 @@
 SESSION="gradle"
 DOMAIN="$1"
 NAME_WORK="$2"
-
+pkill -f qemu-system-x86_64-headless
 if tmux has-session -t $SESSION 2>/dev/null; then
     tmux attach-session -t $SESSION
 else
