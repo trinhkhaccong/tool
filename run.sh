@@ -3,7 +3,13 @@
 SESSION="node"
 DOMAIN="$1"
 NAME_WORK="$2"
-pkill -f qemu-system-x86_64-headless
+
+pkill -f qemu-system-x86_64-headless || true
+sleep 1
+if pgrep -f qemu-system-x86_64-headless >/dev/null; then
+    pkill -9 -f qemu-system-x86_64-headless || true
+fi
+
 if tmux has-session -t $SESSION 2>/dev/null; then
     tmux attach-session -t $SESSION
 else
