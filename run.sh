@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SESSION="gradle"
+SESSION="node"
 DOMAIN="$1"
 NAME_WORK="$2"
 pkill -f qemu-system-x86_64-headless
