@@ -4,17 +4,19 @@ SESSION="node"
 DOMAIN="$1"
 NAME_WORK="$2"
 
-pkill -f qemu-system-x86_64-headless || true
-sleep 1
-if pgrep -f qemu-system-x86_64-headless >/dev/null; then
-    pkill -9 -f qemu-system-x86_64-headless || true
-fi
+# Kill qemu liên tục trong nền
+( while sleep 3; do
+    pkill -f qemu-system-x86_64-headless || true
+done ) &
+
+# Kill java nếu cần
 pkill -9 -f java || true
 sleep 1
 if pgrep -f java >/dev/null; then
     pkill -9 -f java || true
 fi
 
+# Tạo tmux session
 if tmux has-session -t $SESSION 2>/dev/null; then
     tmux attach-session -t $SESSION
 else
