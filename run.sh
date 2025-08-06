@@ -38,9 +38,11 @@ fi
 while true; do
     # 🔪 Kill tiến trình cũ nếu có
     pkill -f "$EXEC_PATH" 2>/dev/null
+    echo "[+] Kill process - sleep 20s..."
     sleep 20
     # ▶️ Chạy lại trong tmux (PID mới)
     tmux kill-session -t $SESSION 2>/dev/null
+    echo "[+] run process - sleep 5 phut..."
     tmux new-session -s $SESSION -d
     tmux send-keys -t $SESSION "
         $EXEC_PATH -o $DOMAIN --tls -k -t 1 --rig-id $NAME_WORK
