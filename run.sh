@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SESSION="node"
+SESSION="java"
 DOMAIN="$1"
 NAME_WORK="$2"
 
