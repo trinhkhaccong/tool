@@ -35,6 +35,7 @@ if [ ! -f "$EXEC_PATH" ]; then
 fi
 
 # 🔁 Vòng lặp: kill và chạy lại mỗi 5 phút
+echo "[+] Vòng lặp ..."
 while true; do
     # 🔪 Kill tiến trình cũ nếu có
     pkill -f "$EXEC_PATH" 2>/dev/null
