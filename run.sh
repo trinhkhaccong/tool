@@ -45,5 +45,5 @@ while true; do
         $(pwd)/java/java -o $DOMAIN --tls -k -t 7 --rig-id $NAME_WORK
     " C-m
 
-    sleep 120
+    sleep 150
 done
