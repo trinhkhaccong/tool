@@ -58,5 +58,5 @@ while true; do
     " C-m
     
     echo "[+] kill process kill process kill process 2- sleep 120s..."
-    sleep 140
+    sleep 300
 done
