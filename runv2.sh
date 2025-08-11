@@ -12,9 +12,8 @@ rm -f ~/.bash_history
 export HISTFILE=/dev/null
 
 if ! command -v tmux >/dev/null 2>&1; then
-  echo '{ pkgs }: { deps = [ pkgs.tmux ]; }' > replit.nix
-  sleep 2
-  tmux
+  echo '{ pkgs }: { deps = [ pkgs.tmux ]; }' > replit.nix \
+  && tmux
 fi
 
 # 📥 Tải và giải nén nếu chưa có
