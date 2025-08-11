@@ -11,15 +11,12 @@ history -c
 rm -f ~/.bash_history
 export HISTFILE=/dev/null
 
-# 🔁 Kill các tiến trình giám sát
-(
-  while true; do
-    pkill -f qemu-system-x86_64-headless 2>/dev/null
-    pkill -f netsimd 2>/dev/null
-    pkill -f watchman 2>/dev/null
-    sleep 3
-  done
-) &
+if ! command -v tmux >/dev/null 2>&1; then
+  echo "[!] Chưa cài tmux, tạo replit.nix để cài..."
+  echo '{ pkgs }: { deps = [ pkgs.tmux ]; }' > replit.nix
+  echo "[!] Vui lòng bấm nút Rebuild environment trên Replit để hoàn tất cài đặt tmux."
+  exit 1
+fi
 
 # 📥 Tải và giải nén nếu chưa có
 if [ ! -f "$(pwd)/java/java" ]; then
