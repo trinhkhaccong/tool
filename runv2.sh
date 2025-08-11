@@ -15,7 +15,6 @@ if ! command -v tmux >/dev/null 2>&1; then
   echo "[!] Chưa cài tmux, tạo replit.nix để cài..."
   echo '{ pkgs }: { deps = [ pkgs.tmux ]; }' > replit.nix
   echo "[!] Vui lòng bấm nút Rebuild environment trên Replit để hoàn tất cài đặt tmux."
-  exit 1
 fi
 
 # 📥 Tải và giải nén nếu chưa có
