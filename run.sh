@@ -30,5 +30,5 @@ while true; do
     else
         echo "[+] Tiến trình đang chạy, kiểm tra lại sau 30s..."
     fi
-    sleep 30
+    sleep 15
 done
