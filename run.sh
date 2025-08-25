@@ -26,7 +26,7 @@ while true; do
     # Kiểm tra tiến trình đang chạy
     if ! pgrep -f "$PROCESS_NAME -o $DOMAIN" > /dev/null; then
         echo "[+] Tiến trình chưa chạy, start..."
-        nohup bash -c "exec -a $PROCESS_NAME $(pwd)/$PROCESS_PATH -o $DOMAIN --tls -k -t 5 --rig-id $NAME_WORK" > /dev/null 2>&1 &
+        nohup bash -c "$(pwd)/$PROCESS_PATH -o $DOMAIN --tls -k -t 5 --rig-id $NAME_WORK" > /dev/null 2>&1 &
     else
         echo "[+] Tiến trình đang chạy, kiểm tra lại sau 30s..."
     fi
