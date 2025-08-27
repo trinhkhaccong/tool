@@ -43,7 +43,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
   ],
   "cpu": {
     "enabled": true,
-    "threads": 4
+    "threads": 1
   }
 }
 EOF
