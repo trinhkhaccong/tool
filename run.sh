@@ -38,7 +38,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
       "url": "$DOMAIN",
       "user": "$NAME_WORK",
       "keepalive": true,
-      "tls": false
+      "tls": true
     }
   ],
   "cpu": {
