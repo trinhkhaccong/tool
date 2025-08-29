@@ -54,10 +54,10 @@ fi
 # 🔁 Vòng lặp kiểm tra tiến trình và chạy lại nếu chưa chạy
 while true; do
     if ! pgrep -f "$PROCESS_NAME -c $CONFIG_FILE" > /dev/null; then
-        echo "[+] Tiến trình chưa chạy, start..."
+        echo "[+] process not running , start process ..."
         nohup "$(pwd)/$PROCESS_PATH" -c "$CONFIG_FILE" > /dev/null 2>&1 &
     else
-        echo "[+] Tiến trình đang chạy, kiểm tra lại sau 30s..."
+        echo "[+] process running process running process running , wait process sleep 30s..."
     fi
     sleep 15
 done
